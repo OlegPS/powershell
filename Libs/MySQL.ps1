@@ -5,9 +5,10 @@ if (!$__stdlib__){. ((Split-Path -Parent -Path $MyInvocation.MyCommand.Definitio
 trap {stdlib_Notify $_;}
 # ----- stdlib library is now included -----
 
-$mysql_server="mysql.local";
-$mysql_user="username";
-$mysql_password="password";
+$mysql_connector = "C:\Program Files (x86)\MySQL\MySQL Connector Net 6.7.4\Assemblies\v2.0\MySQL.Data.dll"; # Path to MySQL.Data.dll
+$mysql_server = "mysql.local";
+$mysql_user = "username";
+$mysql_password = "password";
 
 function mysql_ConvertDate {
 	[cmdletbinding(defaultparametersetname="DateTimeString")]
@@ -40,7 +41,7 @@ function mysql_ExecSQL {
 	if ($EmptyToNull) {
 		$SQL = $SQL -replace "([^\\])''",'$1NULL' -replace '([^\\])""','$1NULL';
 	}
-	[void][System.Reflection.Assembly]::LoadFrom("C:\Program Files (x86)\MySQL\MySQL Connector Net 6.7.4\Assemblies\v2.0\MySQL.Data.dll");
+	[void][System.Reflection.Assembly]::LoadFrom($mysql_connector);
 	$connectionString = "server=$mysql_server;database=$DBName;uid=$mysql_user;pwd=$mysql_password;Convert Zero Datetime=True";
 	$connection = New-Object MySql.Data.MySqlClient.MySqlConnection;
 	$connection.ConnectionString = $connectionString;
